@@ -1,0 +1,40 @@
+name: Product or research proposal
+description: Propose a workflow, experiment, research task, or product improvement.
+title: "[Proposal]: "
+body:
+  - type: markdown
+    attributes:
+      value: Thank you for helping shape BarterSystem. Early criticism and evidence are welcome.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: Who experiences this, and what happens today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed experiment or change
+      description: Describe the smallest useful way to test the idea.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence or examples
+      description: Share research, comparable systems, or lived experience when available. Do not include private personal data.
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks and safeguards
+      description: Consider consent, privacy, fraud, exploitation, accessibility, bias, moderation, and legal obligations.
+    validations:
+      required: true
+  - type: textarea
+    id: success
+    attributes:
+      label: What would we learn?
+      description: Explain what outcome would support, weaken, or change the idea.
+    validations:
+      required: true
