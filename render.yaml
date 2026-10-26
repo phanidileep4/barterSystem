@@ -1,0 +1,15 @@
+# Render Blueprint for the proof of concept (poc/). See poc/README.md → Deploy.
+services:
+  - type: web
+    name: barter-poc
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      # Shared passcode for the private preview. Render asks for it when the
+      # Blueprint is created; it is never stored in the repository.
+      - key: BARTER_PASSCODE
+        sync: false

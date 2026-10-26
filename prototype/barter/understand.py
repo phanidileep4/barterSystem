@@ -36,6 +36,10 @@ CONCEPTS: Dict[str, str] = {
     "bike": "bicycle", "bicycle": "bicycle", "cycle": "bicycle",
     "piano": "music", "guitar": "music", "music": "music",
     "dog": "pets", "dogs": "pets", "pet": "pets", "cat": "pets", "walking": "pets", "sitting": "pets",
+    # small business
+    "website": "website", "websites": "website", "business": "business", "businesses": "business",
+    # paperwork
+    "tax": "tax", "taxes": "tax", "preparing": "preparation", "prepare": "preparation",
     # help
     "help": "help", "someone": "help",
 }
@@ -69,7 +73,8 @@ def _words(text: str):
 def understand(text: str) -> Understanding:
     words = _words(text)
     concepts = frozenset(
-        CONCEPTS.get(w, w) for w in words if w not in STOPWORDS and w not in MINOR_WORDS
+        CONCEPTS.get(w, w) for w in words
+        if len(w) > 1 and w not in STOPWORDS and w not in MINOR_WORDS
     )
     return Understanding(concepts=concepts, involves_minor=any(w in MINOR_WORDS for w in words))
 
@@ -80,8 +85,10 @@ def _weight(concept: str) -> float:
 
 def compare(offer_text: str, need_text: str) -> Tuple[float, FrozenSet[str]]:
     """How much of the need does the offer cover? Returns (0..1, shared concepts)."""
-    offer = understand(offer_text).concepts
-    need = understand(need_text).concepts
+    return compare_concepts(understand(offer_text).concepts, understand(need_text).concepts)
+
+
+def compare_concepts(offer: FrozenSet[str], need: FrozenSet[str]) -> Tuple[float, FrozenSet[str]]:
     if not need:
         return 0.0, frozenset()
     shared = offer & need

@@ -76,8 +76,7 @@ Separating step 2 from steps 1 and 3 is deliberate: a language model can widen *
 | Stage | What gets built | Evidence that it worked |
 |---|---|---|
 | **Now** | Prototype engine on synthetic data ([prototype/](../prototype/)), scenarios, domain model | Circles that a human reviewer agrees make sense; rejections that feel fair |
-| **Next** | Swap the concept dictionary for Claude-assisted understanding, with the dictionary kept as an offline fallback and test oracle | Better recall on varied phrasing without new false matches |
-| **Then** | A small web app: listings, circle proposals, accept/decline, completion feedback | One full exchange completed end-to-end in a usability test |
+| **Next** | [Proof of concept](../poc/): a small web app with listings, explained circles, accept/pass, blocking, help, completion, and optional Claude-assisted understanding that falls back to the dictionary | One full exchange completed end-to-end in a usability test; better recall on varied phrasing without new false matches |
 | **Pilot** | One invited community of 30–100 people | Completed circles, time-to-agreement, drop-out reasons, safety incidents (target: none unhandled) |
 | **Later, if earned** | Optional *open loops* via community mutual credit, so a gift today can be returned by someone else next month | Pilot shows circles alone leave too many needs unmet |
 

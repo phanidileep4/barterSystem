@@ -71,6 +71,7 @@ BarterSystem is currently in **discovery and design**. There is no production ap
 - [Vision: exchange circles](docs/VISION.md): the design direction and how it fits together
 - [Exchange scenarios](docs/research/scenarios.md) and the [v0 domain model](docs/design/domain-model.md)
 - [Matching prototype](prototype/): a locally runnable spike that finds and explains circles in synthetic data
+- [Proof of concept](poc/): a small web app for one fictional community covering listings, explained circles, all-or-nothing agreement, passing, blocking, help and completion (`cd poc && uv run barter-poc`)
 
 The immediate work is to pressure-test the problem, define a responsible exchange model, and agree on the smallest experiment worth building. See the [roadmap](docs/ROADMAP.md) and the repository issues for concrete starting points.
 

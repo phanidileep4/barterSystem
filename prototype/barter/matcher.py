@@ -6,11 +6,11 @@ set of circles in which nobody is asked to take part twice.
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, FrozenSet, List, Optional, Tuple
 
 from . import constraints
 from .models import Community, Listing, Participant
-from .understand import compare, understand
+from .understand import compare_concepts, understand
 
 MATCH_THRESHOLD = 0.5
 MAX_CIRCLE = 4
@@ -39,6 +39,15 @@ class Circle:
     def members(self) -> List[Participant]:
         return [link.giver for link in self.links]
 
+    @property
+    def signature(self) -> FrozenSet[Tuple[str, str]]:
+        """Identifies a circle by which offers meet which needs."""
+        return signature_of(self.links)
+
+
+def signature_of(links) -> FrozenSet[Tuple[str, str]]:
+    return frozenset((link.offer.id, link.need.id) for link in links)
+
 
 @dataclass
 class NearMiss:
@@ -61,11 +70,19 @@ class Result:
     unserved: List[Tuple[Listing, str]] = field(default_factory=list)
 
 
+def concepts_of(listing: Listing) -> FrozenSet[str]:
+    if listing.concepts is not None:
+        return listing.concepts
+    return understand(listing.text).concepts
+
+
 def _safety_notes(offer: Listing, need: Listing) -> Tuple[str, ...]:
+    # Deterministic on purpose: safety guidance never depends on an AI step.
     notes = []
     if understand(need.text).involves_minor or understand(offer.text).involves_minor:
         notes.append("Involves a minor: keep sessions remote or with a guardian present.")
-    concepts = understand(offer.text).concepts | understand(need.text).concepts
+    concepts = (understand(offer.text).concepts | understand(need.text).concepts
+                | concepts_of(offer) | concepts_of(need))
     if "cooking" in concepts:
         notes.append("Food: share ingredients and check allergies first.")
     if "moving" in concepts:
@@ -84,7 +101,7 @@ def build_links(community: Community):
                 continue
             for offer in giver.offers:
                 for need in receiver.needs:
-                    score, shared = compare(offer.text, need.text)
+                    score, shared = compare_concepts(concepts_of(offer), concepts_of(need))
                     if score < MATCH_THRESHOLD:
                         continue
                     reasons = constraints.check(community, giver, offer, receiver, need)
@@ -121,7 +138,8 @@ def find_cycles(links: Dict[Tuple[str, str], Link], max_len: int = MAX_CIRCLE) -
     return cycles
 
 
-def match(community: Community) -> Result:
+def match(community: Community, exclude: FrozenSet[FrozenSet[Tuple[str, str]]] = frozenset()) -> Result:
+    """Find circles. `exclude` holds signatures of circles people already declined."""
     links, near_misses = build_links(community)
     matched_pairs = {(m.giver.id, m.receiver.id) for m in near_misses} | set(links)
     for m in near_misses:
@@ -130,6 +148,8 @@ def match(community: Community) -> Result:
     candidates = []
     for cycle in find_cycles(links):
         circle_links = [links[(cycle[i], cycle[(i + 1) % len(cycle)])] for i in range(len(cycle))]
+        if signature_of(circle_links) in exclude:
+            continue
         mean = sum(l.score for l in circle_links) / len(circle_links)
         confidence = round(mean * LENGTH_PENALTY ** (len(cycle) - 2), 2)
         candidates.append(Circle(circle_links, confidence))

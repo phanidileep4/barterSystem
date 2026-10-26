@@ -13,6 +13,9 @@ class Listing:
     text: str
     mode: str = "either"  # "in_person", "remote" or "either"
     effort_hours: Optional[float] = None
+    # How the listing was understood, if already known (e.g. stored by an app,
+    # extracted by an AI step, or corrected by its owner). None = use the dictionary.
+    concepts: Optional[FrozenSet[str]] = None
 
 
 @dataclass(frozen=True)
