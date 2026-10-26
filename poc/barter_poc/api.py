@@ -5,12 +5,15 @@ you switch between them to walk a circle from every side. The participant id
 in each path stands in for a signed-in user.
 """
 
+import hashlib
+import hmac
 import os
 import threading
+import time
 from typing import List, Optional
 
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
@@ -19,6 +22,9 @@ from .service import NotAllowed, Service
 from .understanding import from_environment
 
 STATIC = os.path.join(os.path.dirname(__file__), "static")
+COOKIE = "barter_pass"
+# Reachable without the passcode: the unlock page, its stylesheet, and the health check.
+OPEN_PATHS = ("/unlock", "/healthz", "/static/styles.css")
 
 
 class Profile(BaseModel):
@@ -59,9 +65,49 @@ class Block(BaseModel):
     other_id: str
 
 
-def create_app(service: Service) -> FastAPI:
-    app = FastAPI(title="BarterSystem POC")
+def _token(passcode: str) -> str:
+    return hashlib.sha256(("barter-poc:" + passcode).encode()).hexdigest()
+
+
+def _lock_page(error: str = "") -> HTMLResponse:
+    with open(os.path.join(STATIC, "lock.html"), encoding="utf-8") as f:
+        html = f.read()
+    if error:
+        html = html.replace("<!--error-->", f'<p class="error">{error}</p>')
+    return HTMLResponse(html, status_code=401)
+
+
+def create_app(service: Service, passcode: Optional[str] = None) -> FastAPI:
+    """With a passcode, every page and API call needs the unlock cookie first."""
+    app = FastAPI(title="BarterSystem POC", docs_url=None if passcode else "/docs",
+                  redoc_url=None, openapi_url=None if passcode else "/openapi.json")
     lock = threading.Lock()  # one SQLite connection; keep writes serial
+
+    if passcode:
+        expected = _token(passcode)
+
+        @app.middleware("http")
+        async def require_passcode(request: Request, call_next):
+            if request.url.path in OPEN_PATHS or hmac.compare_digest(request.cookies.get(COOKIE, ""), expected):
+                return await call_next(request)
+            if request.url.path.startswith("/api/"):
+                return JSONResponse({"detail": "passcode required"}, status_code=401)
+            return _lock_page()
+
+        @app.post("/unlock")
+        def unlock(request: Request, passcode_attempt: str = Form(alias="passcode")):
+            if not hmac.compare_digest(_token(passcode_attempt), expected):
+                time.sleep(1)  # slow down guessing
+                return _lock_page("That passcode didn't work.")
+            response = RedirectResponse("/", status_code=303)
+            https = request.headers.get("x-forwarded-proto", request.url.scheme) == "https"
+            response.set_cookie(COOKIE, expected, max_age=30 * 24 * 3600, httponly=True,
+                                samesite="lax", secure=https)
+            return response
+
+    @app.get("/healthz")
+    def healthz():
+        return {"ok": True}
 
     def call(fn, *args, **kwargs):
         try:
@@ -153,12 +199,13 @@ def build() -> FastAPI:
     service = Service(db.connect(path), from_environment())
     if service.is_empty():
         service.seed()
-    return create_app(service)
+    return create_app(service, passcode=os.environ.get("BARTER_PASSCODE") or None)
 
 
 def main():
     import uvicorn
 
     port = int(os.environ.get("PORT", "8000"))
+    host = os.environ.get("HOST", "127.0.0.1")
     print(f"BarterSystem POC on http://localhost:{port}")
-    uvicorn.run(build(), host="127.0.0.1", port=port)
+    uvicorn.run(build(), host=host, port=port)

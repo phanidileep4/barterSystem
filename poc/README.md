@@ -36,7 +36,23 @@ The header chip switches to **Understanding: Claude**. Each listing is sent to C
 | `BARTER_MODEL` | `claude-opus-5-5` | Model used for understanding (low effort; server-side refusal fallback enabled) |
 | `BARTER_UNDERSTANDING` | auto | Set to `dictionary` to force the word list |
 | `BARTER_DB` | `poc/data/barter-poc.sqlite3` | SQLite file, created and seeded on first run |
+| `BARTER_PASSCODE` | unset | When set, a shared passcode is required for everything |
 | `PORT` | `8000` | |
+| `HOST` | `127.0.0.1` | `0.0.0.0` in the container |
+
+## Deploy (Render)
+
+The repository has a [`Dockerfile`](../Dockerfile) and a [`render.yaml`](../render.yaml) Blueprint.
+
+1. On [render.com](https://render.com), choose **New → Blueprint** and connect this GitHub repository.
+2. When asked for `BARTER_PASSCODE`, choose a passcode to share with the people you invite.
+3. Deploy. The free plan sleeps after about 15 minutes idle, so the first visit afterwards takes a few seconds, and each wake-up starts from fresh demo data.
+
+To turn on Claude, add `ANTHROPIC_API_KEY` under the service's **Environment** settings.
+
+With `BARTER_PASSCODE` set, every page and API call needs the passcode first. It is remembered for 30 days in an HttpOnly cookie, and the API docs are turned off. Without it (local use), the app is open.
+
+Any container host works the same way: `docker build -t barter-poc . && docker run -p 8080:8080 -e BARTER_PASSCODE=... barter-poc` from the repository root.
 
 ## Try this
 

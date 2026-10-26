@@ -59,7 +59,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand .sub { color: var(--muted); font-size: .85rem; }
 .who { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .who label { color: var(--muted); font-size: .9rem; }
-select, input[type=text], input[type=number], textarea {
+select, input[type=text], input[type=number], input[type=password], input[type=search], textarea {
   background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; min-width: 0;
 }
 select:focus-visible, input:focus-visible, textarea:focus-visible, button:focus-visible {
@@ -187,3 +187,11 @@ details.past[open] summary { margin-bottom: 12px; }
   .bal { grid-template-columns: 64px 1fr; }
   .bal .num { grid-column: 2; }
 }
+
+/* passcode page */
+.lock { max-width: 380px; margin: 12vh auto 0; display: grid; gap: 14px; text-align: center; }
+.lock .mark { width: 48px; height: 48px; justify-self: center; color: var(--line); }
+.lock p { color: var(--muted); }
+.lock form { text-align: left; }
+.lock input { width: 100%; }
+.lock .error { color: var(--danger); font-size: .9rem; }

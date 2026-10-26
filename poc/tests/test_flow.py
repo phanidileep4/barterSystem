@@ -170,3 +170,25 @@ def test_claude_without_credentials_falls_back_to_word_list():
     result = u.understand("need", "Help preparing my taxes")
     assert result.source == "dictionary" and "tax" in result.concepts
     assert u.name == "dictionary"
+
+
+def test_passcode_gate(svc):
+    client = TestClient(create_app(svc, passcode="maple-2026"))
+    assert client.get("/healthz").status_code == 200
+    assert "Enter the passcode" in client.get("/").text
+    assert client.get("/api/people").status_code == 401
+    assert client.get("/static/app.js").status_code != 200
+    assert client.get("/docs").status_code == 404 or "passcode" in client.get("/docs").text.lower()
+
+    wrong = client.post("/unlock", data={"passcode": "guess"}, follow_redirects=False)
+    assert wrong.status_code == 401 and "didn't work" in wrong.text
+    assert client.get("/api/people").status_code == 401
+
+    right = client.post("/unlock", data={"passcode": "maple-2026"}, follow_redirects=False)
+    assert right.status_code == 303 and "httponly" in right.headers["set-cookie"].lower()
+    assert client.get("/api/people").status_code == 200
+    assert "Viewing as" in client.get("/").text
+
+
+def test_no_passcode_means_open_for_local_use(svc):
+    assert TestClient(create_app(svc)).get("/api/people").status_code == 200
