@@ -1,0 +1,78 @@
+{
+  "_note": "Synthetic data only. Maple Commons is a fictional neighbourhood.",
+  "zones": {
+    "north": ["central"],
+    "central": ["north", "south", "east"],
+    "south": ["central"],
+    "east": ["central"]
+  },
+  "participants": [
+    {
+      "id": "p1", "name": "Asha", "zone": "north", "max_travel": 1,
+      "availability": ["weekday_evening", "weekend"],
+      "offers": [{"id": "p1-o1", "text": "Tutoring in high school math and physics", "mode": "either", "effort_hours": 4}],
+      "needs":  [{"id": "p1-n1", "text": "Someone to fix a leaking kitchen faucet", "mode": "in_person", "effort_hours": 1.5}]
+    },
+    {
+      "id": "p2", "name": "Ben", "zone": "central", "max_travel": 1,
+      "availability": ["weekend"],
+      "offers": [{"id": "p2-o1", "text": "Basic plumbing repairs: faucets, drains, small leaks", "mode": "in_person", "effort_hours": 1.5}],
+      "needs":  [{"id": "p2-n1", "text": "Headshot photo for my LinkedIn profile", "mode": "in_person", "effort_hours": 1}],
+      "blocks": ["p11"]
+    },
+    {
+      "id": "p3", "name": "Chen", "zone": "central", "max_travel": 1,
+      "availability": ["weekday_evening", "weekend"],
+      "offers": [{"id": "p3-o1", "text": "Portrait and headshot photography", "mode": "in_person", "effort_hours": 1}],
+      "needs":  [{"id": "p3-n1", "text": "Math tutoring for my teenage son", "mode": "either", "effort_hours": 4}]
+    },
+    {
+      "id": "p4", "name": "Diego", "zone": "south", "max_travel": 0,
+      "availability": ["weekday_evening"],
+      "offers": [{"id": "p4-o1", "text": "Spanish conversation practice", "mode": "remote", "effort_hours": 2}],
+      "needs":  [{"id": "p4-n1", "text": "Feedback on my resume", "mode": "remote", "effort_hours": 1}]
+    },
+    {
+      "id": "p5", "name": "Elif", "zone": "east", "max_travel": 0,
+      "availability": ["weekday_evening", "weekday_morning"],
+      "offers": [{"id": "p5-o1", "text": "Career coaching and resume review", "mode": "remote", "effort_hours": 1}],
+      "needs":  [{"id": "p5-n1", "text": "Spanish lessons before an upcoming trip", "mode": "remote", "effort_hours": 2}]
+    },
+    {
+      "id": "p6", "name": "Farah", "zone": "south", "max_travel": 0,
+      "availability": ["weekend"],
+      "offers": [{"id": "p6-o1", "text": "A week of home-cooked dinners", "mode": "in_person", "effort_hours": 5}],
+      "needs":  [{"id": "p6-n1", "text": "Help moving boxes into a new flat", "mode": "in_person", "effort_hours": 4}]
+    },
+    {
+      "id": "p7", "name": "Gus", "zone": "south", "max_travel": 1,
+      "availability": ["weekend"],
+      "offers": [{"id": "p7-o1", "text": "Help with moving and heavy lifting", "mode": "in_person", "effort_hours": 4}],
+      "needs":  [{"id": "p7-n1", "text": "Tune-up for my road bike", "mode": "in_person", "effort_hours": 1}]
+    },
+    {
+      "id": "p8", "name": "Hana", "zone": "south", "max_travel": 1,
+      "availability": ["weekend", "weekday_evening"],
+      "offers": [{"id": "p8-o1", "text": "Bicycle repair and tune-ups", "mode": "in_person", "effort_hours": 1}],
+      "needs":  [{"id": "p8-n1", "text": "Cooked meals during a busy exam month", "mode": "in_person", "effort_hours": 5}]
+    },
+    {
+      "id": "p9", "name": "Ivan", "zone": "north", "max_travel": 0,
+      "availability": ["weekend"],
+      "offers": [{"id": "p9-o1", "text": "Beginner piano lessons", "mode": "in_person", "effort_hours": 3}],
+      "needs":  [{"id": "p9-n1", "text": "Dog walking a few times a week", "mode": "in_person", "effort_hours": 3}]
+    },
+    {
+      "id": "p10", "name": "Jo", "zone": "east", "max_travel": 1,
+      "availability": ["weekend"],
+      "offers": [{"id": "p10-o1", "text": "Dog walking and pet sitting", "mode": "in_person", "effort_hours": 3}],
+      "needs":  [{"id": "p10-n1", "text": "Piano lessons for my daughter", "mode": "in_person", "effort_hours": 3}]
+    },
+    {
+      "id": "p11", "name": "Kai", "zone": "central", "max_travel": 1,
+      "availability": ["weekday_morning", "weekend"],
+      "offers": [{"id": "p11-o1", "text": "Logo and poster design", "mode": "remote", "effort_hours": 3}],
+      "needs":  [{"id": "p11-n1", "text": "Plumber to look at a dripping shower", "mode": "in_person", "effort_hours": 1}]
+    }
+  ]
+}

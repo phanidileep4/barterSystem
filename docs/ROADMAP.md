@@ -2,7 +2,11 @@
 
 This roadmap is intentionally problem-first. Dates and technologies will follow evidence rather than lead it.
 
+See [VISION.md](VISION.md) for the direction these phases serve.
+
 ## Phase 0 — Understand the exchange problem
+
+Started: [exchange scenarios](research/scenarios.md) and the [v0 domain model](design/domain-model.md).
 
 - Collect representative scenarios for skills, time, goods, and mixed exchanges.
 - Identify where direct barter fails and where multi-party matching may help.
@@ -11,6 +15,8 @@ This roadmap is intentionally problem-first. Dates and technologies will follow 
 - Decide what evidence would justify building an MVP.
 
 ## Phase 1 — Prototype matching
+
+Started: [prototype/](../prototype/) finds direct and three-way circles in synthetic data, with explanations, near misses and safety notes.
 
 - Create a small synthetic dataset of offers and needs.
 - Compare tag-based, semantic, and graph-based matching approaches.
