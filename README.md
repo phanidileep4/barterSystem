@@ -68,6 +68,10 @@ AI should not secretly price people, rank human worth, or make binding decisions
 
 BarterSystem is currently in **discovery and design**. There is no production application yet, and the technical stack is deliberately undecided.
 
+- [Vision: exchange circles](docs/VISION.md): the design direction and how it fits together
+- [Exchange scenarios](docs/research/scenarios.md) and the [v0 domain model](docs/design/domain-model.md)
+- [Matching prototype](prototype/): a locally runnable spike that finds and explains circles in synthetic data
+
 The immediate work is to pressure-test the problem, define a responsible exchange model, and agree on the smallest experiment worth building. See the [roadmap](docs/ROADMAP.md) and the repository issues for concrete starting points.
 
 ## Contributing
