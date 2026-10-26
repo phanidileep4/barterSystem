@@ -26,6 +26,8 @@ Started: [prototype/](../prototype/) finds direct and three-way circles in synth
 
 ## Phase 2 — Test one complete workflow
 
+Started: [poc/](../poc/) runs the full workflow for one fictional community, with optional Claude-assisted understanding. Next: usability sessions with real people, using sample data only.
+
 - Choose one bounded community or use case.
 - Support profiles, listings, proposals, counteroffers, and exchange status.
 - Add consent, blocking, reporting, and basic moderation paths.

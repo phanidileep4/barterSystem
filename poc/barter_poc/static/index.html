@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BarterSystem POC</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23c4622d' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='5' r='4' fill='%23c4622d'/%3E%3Ccircle cx='25.5' cy='21.5' r='4' fill='%235d8a6b'/%3E%3Ccircle cx='6.5' cy='21.5' r='4' fill='%23a86a12'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+        <circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="16" cy="5" r="4" class="m1"/><circle cx="25.5" cy="21.5" r="4" class="m2"/><circle cx="6.5" cy="21.5" r="4" class="m3"/>
+      </svg>
+      <div>
+        <div class="name">BarterSystem</div>
+        <div class="sub">Maple Commons · fictional community</div>
+      </div>
+    </div>
+    <div class="who">
+      <label for="persona">Viewing as</label>
+      <select id="persona"></select>
+      <span id="mode" class="chip" title="How listings are understood"></span>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="circles" aria-selected="true">Circles</button>
+    <button role="tab" data-tab="listings">My listings</button>
+    <button role="tab" data-tab="community">Community</button>
+    <button role="tab" data-tab="profile">Profile</button>
+  </nav>
+
+  <main id="view" aria-live="polite"></main>
+
+  <footer class="foot">
+    <p>Proof of concept · no sign-in · every person here is fictional. Switch "Viewing as" to walk a circle from each side.</p>
+    <div class="foot-actions">
+      <button class="ghost" id="run">Find circles now</button>
+      <button class="ghost" id="reset">Reset demo</button>
+    </div>
+  </footer>
+
+  <div id="toast" role="status"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
